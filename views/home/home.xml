@@ -1,5 +1,28 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd">
-    <StackLayout>
-        <Button text="Scan Barcode" tap="scanBarcode" />
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded">
+    
+
+    <ActionBar>
+<Label text="Registro de ingreso" width="100%" class="h2 text-center" />
+</ActionBar>
+    <StackLayout >
+      
+            <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
+            
+            <ScrollView row="1" class="fields-section">
+                <StackLayout>
+                    <Label text="{{clave}}"/>
+                    <Button text="Escanear codigo QR" tap="scanBarcode" />
+                    <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
+                        <Label text="Temperatura" class="field-title" />
+                        <TextField id="temperatura" text="{{ temp }}" hint=" °C" class="field" ios:col="1" keyboardType="number" android:row="1" />
+                    </GridLayout>
+                
+                
+                </StackLayout>
+            </ScrollView>
+            <Button text="Enviar" class="update" tap="onSubmit" row="2"/>
+        </GridLayout>
+    
+        
     </StackLayout>
 </Page>

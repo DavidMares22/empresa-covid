@@ -1,4 +1,4 @@
- <Page loaded="loaded">
+ <Page loaded="loaded" navigatedTo="onNavigatedTo">
  
 <ActionBar>
 <Label text="Registro de ingreso" width="100%" class="h2 text-center" />
