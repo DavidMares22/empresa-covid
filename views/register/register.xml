@@ -10,18 +10,18 @@
             
             <ScrollView row="1" class="fields-section">
                 <StackLayout>
-                    
+                    <!-- blur="onSubmit" -->
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Correo" class="field-title" />
-                        <TextField id="correo" text="{{ temp }}" class="field" ios:col="1"  android:row="1" />
+                        <TextField id="correo" text="{{ correo }}"  class="field" ios:col="1"  android:row="1" keyboardType="email"/>
                     </GridLayout>
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Contraseña" class="field-title" />
-                        <TextField id="contraseña" text="{{ temp }}" class="field" ios:col="1"  android:row="1" />
+                        <TextField id="contraseña" text="{{ con }}" secure="true" class="field" ios:col="1"  android:row="1" />
                     </GridLayout>
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Repetir contraseña" class="field-title" />
-                        <TextField id="repetircon" text="{{ temp }}" class="field" ios:col="1"  android:row="1" />
+                        <TextField id="repetircon" text="{{ repcon }}"  secure="true" class="field" ios:col="1"  android:row="1" />
                     </GridLayout>
                 
                 

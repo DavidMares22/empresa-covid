@@ -1,4 +1,4 @@
 <!-- <Frame defaultPage="views/home/home"> -->
 <!-- <Frame defaultPage="views/login/login"> -->
-<Frame defaultPage="views/home/home">
+<Frame defaultPage="views/register/register">
 </Frame>
