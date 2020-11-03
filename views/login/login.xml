@@ -1,0 +1,29 @@
+<Page loaded="loaded">
+    
+
+    <ActionBar>
+<Label text="Iniciar sesión" width="100%" class="h2 text-center" />
+</ActionBar>
+    <StackLayout >
+      
+            <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
+            
+            <ScrollView row="1" class="fields-section">
+                <StackLayout>
+                    
+                    <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
+                        <Label text="Correo" class="field-title" />
+                        <TextField id="correo" text="{{ temp }}" class="field" ios:col="1"  android:row="1" />
+                    </GridLayout>
+                    <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
+                        <Label text="Contraseña" class="field-title" />
+                        <TextField id="contraseña" text="{{ temp }}" class="field" ios:col="1"  android:row="1" />
+                    </GridLayout>
+                
+                
+                </StackLayout>
+            </ScrollView>
+            <Button text="Iniciar sesión" class="update" tap="onSubmit" row="2"/>
+        </GridLayout>
+    </StackLayout>
+</Page>
