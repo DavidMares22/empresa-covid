@@ -1,6 +1,7 @@
 // import barcodescannerModule  = require("nativescript-barcodescanner");
 import { BarcodeScanner  } from "nativescript-barcodescanner";
 let barcodescannerModule = new BarcodeScanner();
+const httpModule = require("tns-core-modules/http");
 const {fromObject} = require("@nativescript/core")
 
 const obj = fromObject({
@@ -42,12 +43,37 @@ export function requestPermission() {
 
  
 export function onSubmit(){
-    var temperature = parseFloat(obj.get('temp'))
-    if (temperature<35 || temperature>40 || isNaN(temperature) ){
-        alert('temperatura no valida (35° - 40°)')
-    }else{
-        alert('Enviado! '+ temperature)
-    }
+    // var temperature = parseFloat(obj.get('temp'))
+    // if (temperature<35 || temperature>40 || isNaN(temperature) ){
+    //     alert('temperatura no valida (35° - 40°)')
+    // }else{
+    //     alert('Enviado! '+ temperature)
+
+        httpModule.request({
+            url: "https://www.covidcinvestav.com/index.php?r=api/checkin",
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            content: JSON.stringify({
+                "Visita":
+                {
+                    "codigoindividuo":"$2y$13$iuN17UXMrKHSfROYqCa3fuEfeJ7fmVqCXEY0Dm6VB6uXWipjf5P8y",
+                    "idnegocio":"2",
+                    "fechavisita":"2020-11-07 12:50:27",
+                    "temperatura":"34"
+                },
+                "LoginForm":
+                {
+                    "username":"negocio",
+                    "password":"jvW13%b2020"
+                }
+            })
+        }).then((response) => {
+            // const result = response.content.toJSON();
+            alert(response.content)
+        }, (e) => {
+        });
+
+    // }
     
 
 }
