@@ -43,11 +43,11 @@ export function requestPermission() {
 
  
 export function onSubmit(){
-    // var temperature = parseFloat(obj.get('temp'))
-    // if (temperature<35 || temperature>40 || isNaN(temperature) ){
-    //     alert('temperatura no valida (35° - 40°)')
-    // }else{
-    //     alert('Enviado! '+ temperature)
+    var temperature = parseFloat(obj.get('temp'))
+    if (temperature<35 || temperature>40 || isNaN(temperature) ){
+        alert('temperatura no valida (35° - 40°)')
+    }else{
+        // alert('Enviado! '+ temperature)
 
         httpModule.request({
             url: "https://www.covidcinvestav.com/index.php?r=api/checkin",
@@ -58,8 +58,8 @@ export function onSubmit(){
                 {
                     "codigoindividuo":"$2y$13$iuN17UXMrKHSfROYqCa3fuEfeJ7fmVqCXEY0Dm6VB6uXWipjf5P8y",
                     "idnegocio":"2",
-                    "fechavisita":"2020-11-07 12:50:27",
-                    "temperatura":"34"
+                    "fechavisita":"",
+                    "temperatura":temperature.toString()
                 },
                 "LoginForm":
                 {
@@ -73,7 +73,7 @@ export function onSubmit(){
         }, (e) => {
         });
 
-    // }
+    }
     
 
 }
