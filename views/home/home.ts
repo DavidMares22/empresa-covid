@@ -6,7 +6,8 @@ const {fromObject} = require("@nativescript/core")
 
 const obj = fromObject({
     temp: '',
-    clave:''
+    clave:'no identificado',
+
 })
 
 var clave;
@@ -44,10 +45,12 @@ export function requestPermission() {
  
 export function onSubmit(){
     var temperature = parseFloat(obj.get('temp'))
+    var codigoCliente = obj.get('clave')
+
     if (temperature<35 || temperature>40 || isNaN(temperature) ){
         alert('temperatura no valida (35° - 40°)')
     }else{
-        // alert('Enviado! '+ temperature)
+        alert('Enviado! '+ temperature + codigoCliente)
 
         httpModule.request({
             url: "https://www.covidcinvestav.com/index.php?r=api/checkin",
@@ -56,7 +59,7 @@ export function onSubmit(){
             content: JSON.stringify({
                 "Visita":
                 {
-                    "codigoindividuo":"$2y$13$iuN17UXMrKHSfROYqCa3fuEfeJ7fmVqCXEY0Dm6VB6uXWipjf5P8y",
+                    "codigoindividuo":codigoCliente,
                     "idnegocio":"2",
                     "fechavisita":"",
                     "temperatura":temperature.toString()
@@ -72,6 +75,9 @@ export function onSubmit(){
             alert(response.content)
         }, (e) => {
         });
+
+
+        obj.set('clave','no identificado')
 
     }
     
