@@ -12,12 +12,12 @@
                 <StackLayout>
                     
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
-                        <Label text="Correo" class="field-title" />
-                        <TextField id="correo" text="{{ temp }}" class="field" ios:col="1"  android:row="1" />
+                        <Label text="Usuario" class="field-title" />
+                        <TextField id="usuario" text="{{ username }}" class="field" ios:col="1"  android:row="1" />
                     </GridLayout>
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Contraseña" class="field-title" />
-                        <TextField id="contraseña" text="{{ temp }}" class="field" ios:col="1"  android:row="1" />
+                        <TextField id="contraseña" secure="true" text="{{ pwd }}" class="field" ios:col="1"  android:row="1" />
                     </GridLayout>
                 
                 

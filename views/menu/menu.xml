@@ -1,0 +1,16 @@
+<page loaded="loaded">
+
+<ActionBar>
+<Label text="{{nombreNegocio}}" width="100%" class="h2 text-center" />
+</ActionBar>
+
+    <StackLayout>
+        
+        
+        <Button  text="Hacer check-in" tap="goQR" ></Button>
+        
+        
+        
+    </StackLayout>
+</page>
+
