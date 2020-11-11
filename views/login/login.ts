@@ -14,7 +14,7 @@ var page;
 export function loaded(args) {
     page = args.object;  
     page.bindingContext = obj
-    
+    appSettings.remove("nombreNegocio")
     
     
 }
@@ -38,9 +38,14 @@ export function onSubmit(){
     }).then((response) => {
         var result = response.content.toJSON();
         // alert(result[0].nombre)
-        appSettings.remove("nombreNegocio")
+        appSettings.setString("LoggedIn","Si");
         appSettings.setString("nombreNegocio", result[0].nombre)
-        page.frame.navigate("views/menu/menu");
+        const options1 = {
+            moduleName:"views/menu/menu",
+            clearHistory:true
+        }
+        page.frame.navigate(options1);
+        
     }).catch((e) => {
           console.log(e);
       }) 

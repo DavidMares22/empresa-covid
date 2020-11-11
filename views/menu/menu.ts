@@ -15,3 +15,20 @@ export function loaded(args) {
     
     
 }
+
+
+export function goCheckin(args) {
+   
+  page.frame.navigate("views/home/home");
+  
+}
+export function goLogout() {
+  appSettings.setString("LoggedIn","No");
+  const options3 = {
+    moduleName:"views/login/login",
+    clearHistory:true
+}
+page.frame.navigate(options3);
+  
+  
+}

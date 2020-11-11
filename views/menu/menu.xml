@@ -7,7 +7,8 @@
     <StackLayout>
         
         
-        <Button  text="Hacer check-in" tap="goQR" ></Button>
+        <Button  text="Hacer registro de ingreso" tap="goCheckin" ></Button>
+        <Button  text="Cerrar sesión" tap="goLogout" ></Button>
         
         
         

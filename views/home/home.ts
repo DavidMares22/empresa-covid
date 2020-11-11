@@ -10,7 +10,7 @@ const obj = fromObject({
 
 })
 
-var clave;
+
 var page;
  
 
@@ -42,6 +42,9 @@ export function requestPermission() {
     });
 }
 
+export function backHome(){    
+    page.frame.goBack()
+}
  
 export function onSubmit(){
     var temperature = parseFloat(obj.get('temp'))
@@ -118,3 +121,4 @@ export function scanBarcode() {
 
  
 }
+
