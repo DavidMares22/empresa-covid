@@ -19,8 +19,8 @@
                         <Label text="Contraseña" class="field-title" />
                         <TextField id="contraseña" secure="true" text="{{ pwd }}" class="field" ios:col="1"  android:row="1" />
                     </GridLayout>
-                
-                
+             
+                <ListPicker items="{{ years }}" selectedIndex="0" loaded="onListPickerLoaded"  />
                 </StackLayout>
             </ScrollView>
             <Button text="Iniciar sesión" class="update" tap="onSubmit" row="2"/>
