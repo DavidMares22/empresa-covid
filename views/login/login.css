@@ -4,7 +4,7 @@
 
 .form-content {
     background-color: white;
-    margin-top: 60;
+    margin-top: 40;
     margin-left: 42;
     margin-right: 42;
     margin-bottom: 30;
@@ -12,11 +12,11 @@
 }
 
 
-
+/* 
 .fields-section {
     margin-left: 16;
     margin-right: 16;
-}
+} */
 
 .field-title {
   
@@ -41,4 +41,8 @@
     background-color: #2641da;
     font-size: 16;
     text-transform: uppercase;
+}
+.picker {
+ font-size:14;
+ 
 }

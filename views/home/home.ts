@@ -2,7 +2,8 @@
 import { BarcodeScanner  } from "nativescript-barcodescanner";
 let barcodescannerModule = new BarcodeScanner();
 const httpModule = require("tns-core-modules/http");
-const {fromObject} = require("@nativescript/core")
+const {fromObject} = require("@nativescript/core");
+var appSettings = require("tns-core-modules/application-settings");
 
 const obj = fromObject({
     temp: '',
@@ -63,7 +64,7 @@ export function onSubmit(){
                 "Visita":
                 {
                     "codigoindividuo":codigoCliente,
-                    "idnegocio":"2",
+                    "idnegocio":appSettings.getString("idNegocio","vacio"),
                     "fechavisita":"",
                     "temperatura":temperature.toString()
                 },

@@ -20,10 +20,11 @@
                         <TextField id="contraseña" secure="true" text="{{ pwd }}" class="field" ios:col="1"  android:row="1" />
                     </GridLayout>
              
-                <ListPicker items="{{ years }}" selectedIndex="0" loaded="onListPickerLoaded"  />
+                <ListPicker class="picker" items="{{ years }}"  selectedIndex="0" loaded="onListPickerLoaded" visibility="{{ mostrar? 'visible' : 'collapsed' }}"  />
                 </StackLayout>
             </ScrollView>
-            <Button text="Iniciar sesión" class="update" tap="onSubmit" row="2"/>
+            <Button text="Iniciar sesión" class="update" tap="onSubmit" row="2" />
+            <Button text="seleccionar negocio" class="update" tap="selectNegocio" row="2" visibility="{{ mostrar? 'visible' : 'collapsed' }}"/>
         </GridLayout>
     </StackLayout>
 </Page>
