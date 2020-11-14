@@ -22,6 +22,11 @@ export function goCheckin(args) {
   page.frame.navigate("views/home/home");
   
 }
+export function goExample(args) {
+   
+  page.frame.navigate("views/example/example");
+  
+}
 export function goLogout() {
   appSettings.setString("LoggedIn","No");
   const options3 = {

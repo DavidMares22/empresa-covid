@@ -4,6 +4,9 @@ let barcodescannerModule = new BarcodeScanner();
 const httpModule = require("tns-core-modules/http");
 const {fromObject} = require("@nativescript/core");
 var appSettings = require("tns-core-modules/application-settings");
+var Sqlite = require("nativescript-sqlite");
+var Observable = require("data/observable").Observable;
+var ObservableArray = require("data/observable-array").ObservableArray;
 
 const obj = fromObject({
     temp: '',
@@ -13,12 +16,15 @@ const obj = fromObject({
 
 
 var page;
- 
+
+
 
 export function loaded(args) {
     page = args.object;  
     page.bindingContext = obj
-
+    
+    
+     
 
    
 }
@@ -54,7 +60,7 @@ export function onSubmit(){
     if (temperature<35 || temperature>40 || isNaN(temperature) ){
         alert('temperatura no valida (35° - 40°)')
     }else{
-        alert('Enviado! '+ temperature + codigoCliente)
+        
 
         httpModule.request({
             url: "https://www.covidcinvestav.com/index.php?r=api/checkin",
@@ -76,10 +82,31 @@ export function onSubmit(){
             })
         }).then((response) => {
             // const result = response.content.toJSON();
-            alert(response.content)
+            
+            alert('Enviado! '+ temperature + codigoCliente+ response.content)
+           
         }, (e) => {
-        });
+            // alert(e);
+       
+            (new Sqlite("temp.db")).then(db => {
+                db.execSQL("CREATE TABLE IF NOT EXISTS lists (id INTEGER PRIMARY KEY AUTOINCREMENT, temperatura TEXT)").then(id => {
+                    
+                    db.execSQL("INSERT INTO lists (temperatura) VALUES (?)", temperature.toString()).then(id => {
+                        alert('insertado!'+ id)
+                    }, error => {
+                        console.log("INSERT ERROR", error);
+                    });
 
+                }, error => {
+                    console.log("CREATE TABLE ERROR", error);
+                });
+            }, error => {
+                console.log("OPEN DB ERROR", error);
+            });    
+
+
+
+        });
 
         obj.set('clave','no identificado')
 
@@ -122,4 +149,5 @@ export function scanBarcode() {
 
  
 }
+
 
