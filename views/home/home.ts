@@ -16,18 +16,27 @@ const obj = fromObject({
 
 
 var page;
-
+var tempDB;
+var temperature;
 
 
 export function loaded(args) {
     page = args.object;  
-    page.bindingContext = obj
+    page.bindingContext = obj;
     
     
-     
+    (new Sqlite("temp.db")).then(db => {
+        db.execSQL("CREATE TABLE IF NOT EXISTS lists (id INTEGER PRIMARY KEY AUTOINCREMENT, temperatura TEXT)").then(id => {
+            tempDB = createViewModel(db);
+        }, error => {
+            console.log("CREATE TABLE ERROR", error);
+        });
+    }, error => {
+        console.log("OPEN DB ERROR", error);
+    });
+}     
 
-   
-}
+ 
 
 export function requestPermission() {
     return new Promise((resolve, reject) => {
@@ -54,7 +63,7 @@ export function backHome(){
 }
  
 export function onSubmit(){
-    var temperature = parseFloat(obj.get('temp'))
+    temperature = parseFloat(obj.get('temp'))
     var codigoCliente = obj.get('clave')
 
     if (temperature<35 || temperature>40 || isNaN(temperature) ){
@@ -86,25 +95,8 @@ export function onSubmit(){
             alert('Enviado! '+ temperature + codigoCliente+ response.content)
            
         }, (e) => {
-            // alert(e);
-       
-            (new Sqlite("temp.db")).then(db => {
-                db.execSQL("CREATE TABLE IF NOT EXISTS lists (id INTEGER PRIMARY KEY AUTOINCREMENT, temperatura TEXT)").then(id => {
-                    
-                    db.execSQL("INSERT INTO lists (temperatura) VALUES (?)", temperature.toString()).then(id => {
-                        alert('insertado!'+ id)
-                    }, error => {
-                        console.log("INSERT ERROR", error);
-                    });
-
-                }, error => {
-                    console.log("CREATE TABLE ERROR", error);
-                });
-            }, error => {
-                console.log("OPEN DB ERROR", error);
-            });    
-
-
+            // alert(e);   
+            tempDB.insert();               
 
         });
 
@@ -151,3 +143,44 @@ export function scanBarcode() {
 }
 
 
+function createViewModel(database) {
+    var viewModel = new Observable();
+    viewModel.lists = new ObservableArray([]);
+
+    viewModel.insert = function() {
+        
+            database.execSQL("INSERT INTO lists (temperatura) VALUES (?)", temperature.toString()).then(id => {
+                this.lists.push({id: id, temperatura: temperature.toString()});
+                alert("insertado "+id)
+            }, error => {
+                console.log("INSERT ERROR", error);
+            });
+        
+    }
+    viewModel.delete = function() {
+        
+            database.execSQL("DELETE FROM lists").then(() => {
+                alert("deleted")
+            }, error => {
+                console.log("INSERT ERROR", error);
+            });
+        
+    }
+
+    viewModel.select = function() {
+        this.lists = new ObservableArray([]);
+        database.all("SELECT id, temperatura FROM lists").then(rows => {
+            for(var row in rows) {
+                this.lists.push({id: rows[row][0], temperatura: rows[row][1]});
+            }
+        }, error => {
+            console.log("SELECT ERROR", error);
+        });
+    }
+
+    viewModel.select();
+
+    return viewModel;
+}
+
+exports.createViewModel = createViewModel;
