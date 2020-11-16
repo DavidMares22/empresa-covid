@@ -9,7 +9,7 @@
         
         <Button  text="Hacer registro de ingreso" tap="goCheckin" ></Button>
         <Button  text="Cerrar sesión" tap="goLogout" ></Button>
-        <Button  text="Example" tap="goExample" ></Button>
+        <!-- <Button  text="Example" tap="goExample" ></Button> -->
         
         
         

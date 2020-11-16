@@ -6,7 +6,8 @@
 <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" tap="backHome"/>
 </ActionBar>
     <StackLayout >
-      
+            <Button text="Sincronizar registros" tap="sincReg" visibility="{{ mostrarBtn ? 'visible' : 'collapsed' }}"/>
+            <Label text="Modo sin conexion" width="100%" class="h3 text-center" backgroundColor="#add8e6" visibility="{{ mostrar? 'visible' : 'collapsed' }}"/>
             <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
             
             <ScrollView row="1" class="fields-section">
@@ -18,9 +19,9 @@
                         <TextField id="temperatura" text="{{ temp }}" hint=" °C" class="field" ios:col="1" keyboardType="number" android:row="1" />
                     </GridLayout>
                 
-                
                 </StackLayout>
             </ScrollView>
+                
             <Button text="Enviar" class="update" tap="onSubmit" row="2"/>
         </GridLayout>
     
