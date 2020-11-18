@@ -1,7 +1,8 @@
 <page loaded="loaded">
 
 <ActionBar>
-<Label text="{{nombreNegocio}}" width="100%" class="h2 text-center" />
+<Label text="{{nombreNegocio}}" width="100%" class="h3 text-center" textWrap="true" />
+
 </ActionBar>
 
     <StackLayout>

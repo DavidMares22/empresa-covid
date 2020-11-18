@@ -6,7 +6,7 @@
 <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" tap="backHome"/>
 </ActionBar>
     <StackLayout >
-            <Button text="Sincronizar registros" tap="sincReg" visibility="{{ mostrarBtn ? 'visible' : 'collapsed' }}"/>
+            <Button text="{{txtBtn}}" tap="sincReg" visibility="{{ mostrarBtn ? 'visible' : 'collapsed' }}"/>
             <Label text="Modo sin conexion" width="100%" class="h3 text-center" backgroundColor="#add8e6" visibility="{{ mostrar? 'visible' : 'collapsed' }}"/>
             <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
             

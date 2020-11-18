@@ -22,6 +22,8 @@ export function loaded(args) {
     page.bindingContext = obj
     appSettings.remove("nombreNegocio")
     appSettings.remove("idNegocio")
+    appSettings.remove("calleNegocio")
+    appSettings.remove("numeroNegocio")
     items = []
 
     
@@ -77,6 +79,8 @@ export function onSubmit(){
                         // alert(items[indexSelected])
                      appSettings.setString("LoggedIn","Si");
                      appSettings.setString("nombreNegocio", results[indexSelected].nombre)
+                     appSettings.setString("calleNegocio", results[indexSelected].calle)
+                     appSettings.setString("numeroNegocio", results[indexSelected].numero)
                      appSettings.setString("idNegocio", (results[indexSelected].idnegocio).toString())
 
                      const options1 = {

@@ -2,15 +2,15 @@ var appSettings = require("tns-core-modules/application-settings");
  
 
 var page;
- 
+
 
 export function loaded(args) {
     page = args.object;  
     
-    
     page.bindingContext = {      
           
-        nombreNegocio:appSettings.getString("nombreNegocio","vacio")
+        nombreNegocio:appSettings.getString("nombreNegocio","vacio") +" - "+appSettings.getString("calleNegocio","vacio")+" #"+appSettings.getString("numeroNegocio","vacio"),
+        
       }
     
     

@@ -8,13 +8,15 @@ var Sqlite = require("nativescript-sqlite");
 var Observable = require("data/observable").Observable;
 var ObservableArray = require("data/observable-array").ObservableArray;
 var fecha = require('fecha');
+var Dialogs = require("ui/dialogs");
 
 const obj = fromObject({
     temp: '',
     clave:'no identificado',
     mostrar:false,
     mostrarBtn:false,
-    cantidadReg:0
+    cantidadReg:0,
+    txtBtn:''
 
 })
 
@@ -78,7 +80,14 @@ export function onSubmit(){
     codigoCliente = obj.get('clave');
 
     if (temperature<35 || temperature>40 || isNaN(temperature) ){
-        alert('temperatura no valida (35° - 40°)')
+        Dialogs.alert({
+            title: "Error",
+            message: "temperatura no valida (35° - 40°): ",
+            okButtonText: "Ok"
+        }).then(function () {
+            console.log("Dialog closed!");
+        });
+        // alert('temperatura no valida (35° - 40°)')
     }else{
         
 
@@ -102,7 +111,15 @@ export function onSubmit(){
             })
         }).then((response) => {
             // const result = response.content.toJSON();
-            alert('Enviado! '+ temperature + codigoCliente+ response.content)
+            Dialogs.alert({
+                title: "Enviado!",
+                message: "temp: "+temperature+" codigo: "+codigoCliente,
+                okButtonText: "Ok"
+            }).then(function () {
+                console.log("Dialog closed!");
+            });
+         
+            // alert('Enviado! '+ temperature + codigoCliente+ response.content)
             
             obj.set('mostrar',false);
             if(obj.get('cantidadReg')>0){
@@ -112,7 +129,7 @@ export function onSubmit(){
             obj.set('clave','no identificado')
            
         }, (e) => {
-            console.log(e);
+            // console.log(e);
             tempDB.insert();               
             obj.set('mostrarBtn',false);
             obj.set('mostrar',true);
@@ -170,8 +187,16 @@ function createViewModel(database) {
         var fechaVisita = fecha.format(date, 'YYYY-MM-DD HH:mm:ss');
             database.execSQL("INSERT INTO lists (temperatura, codigo, fechaVisita) VALUES (?,?,?)", [temperature.toString(),codigoCliente,fechaVisita]).then(id => {
                 this.lists.push({id: id, temperatura: temperature.toString(), codigo:codigoCliente, fecha:fechaVisita});
-                alert("insertado "+ this.lists.length);
+                // alert("insertado "+ this.lists.length);
+                Dialogs.alert({
+                    title: "Almacenado localmente!",
+                    message: "# Cantidad: "+this.lists.length,
+                    okButtonText: "Ok"
+                }).then(function () {
+                    console.log("Dialog closed!");
+                });
                 obj.set('cantidadReg',this.lists.length);
+                obj.set('txtBtn',"Sincronizar " +this.lists.length + " registros");
                 // viewModel.enviar();
             }, error => {
                 console.log("INSERT ERROR", error);
@@ -181,7 +206,14 @@ function createViewModel(database) {
     viewModel.delete = function() {
         
             database.execSQL("DELETE FROM lists").then(() => {
-                alert("deleted")
+                // alert("deleted")
+                Dialogs.alert({
+                    title: "Enviado!",
+                    message: "Sincronizado correctamente!",
+                    okButtonText: "Ok"
+                }).then(function () {
+                    console.log("Dialog closed!");
+                });
                 this.lists.length = 0;
                 obj.set('cantidadReg',this.lists.length);
                 obj.set('mostrarBtn',false);
