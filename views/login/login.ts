@@ -56,7 +56,7 @@ export function onSubmit(){
                 })
             }).then((response) => {
                      results = response.content.toJSON();
-                    // alert(response.content)
+                    alert(response.content)
                     // alert(result.length)
                     
                     // appSettings.setString("nombreNegocio", result[0].nombre)

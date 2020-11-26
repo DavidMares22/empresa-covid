@@ -16,10 +16,15 @@ const obj = fromObject({
     mostrar:false,
     mostrarBtn:false,
     cantidadReg:0,
-    txtBtn:''
+    txtBtn:'',
+    afluCounter:0,
+    afluColor:'#ffcccb',
+    afluMax:10
 
 })
-
+// red #ffcccb
+// green #90ee90
+// yellow #fffcbb
 
 var page;
 var tempDB;
@@ -27,6 +32,7 @@ var temperature;
 var codigoCliente;
 var viewModel = new Observable();
 viewModel.lists = new ObservableArray([]);
+viewModel.afluencia = new ObservableArray([]);
 
 export function loaded(args) {
     page = args.object;  
@@ -39,9 +45,17 @@ export function loaded(args) {
         }, error => {
             console.log("CREATE TABLE ERROR", error);
         });
+        db.execSQL("CREATE TABLE IF NOT EXISTS afluencia (id INTEGER PRIMARY KEY AUTOINCREMENT, fechaVisita DATETIME )").then(id => {
+            // tempDB = createViewModel(db);
+            tempDB.deleteAfluencia();   
+        }, error => {
+            console.log("CREATE TABLE ERROR", error);
+        });
     }, error => {
         console.log("OPEN DB ERROR", error);
     });
+
+  
 }     
 
  
@@ -85,7 +99,7 @@ export function onSubmit(){
             message: "temperatura no valida (35° - 40°): ",
             okButtonText: "Ok"
         }).then(function () {
-            console.log("Dialog closed!");
+            // console.log("Dialog closed!");
         });
         // alert('temperatura no valida (35° - 40°)')
     }else{
@@ -110,16 +124,16 @@ export function onSubmit(){
                 }
             })
         }).then((response) => {
-            // const result = response.content.toJSON();
+            const result = response.content.toJSON();
             Dialogs.alert({
                 title: "Enviado!",
                 message: "temp: "+temperature+" codigo: "+codigoCliente,
                 okButtonText: "Ok"
             }).then(function () {
-                console.log("Dialog closed!");
+                // console.log("Dialog closed!");
             });
          
-            // alert('Enviado! '+ temperature + codigoCliente+ response.content)
+            alert('Enviado! '+ temperature + codigoCliente+ response.content)
             
             obj.set('mostrar',false);
             if(obj.get('cantidadReg')>0){
@@ -127,10 +141,11 @@ export function onSubmit(){
                 obj.set('mostrarBtn',true);
             }
             obj.set('clave','no identificado')
-           
+            tempDB.insertAfluencia();
         }, (e) => {
             // console.log(e);
-            tempDB.insert();               
+            tempDB.insert();
+            tempDB.insertAfluencia();               
             obj.set('mostrarBtn',false);
             obj.set('mostrar',true);
             obj.set('clave','no identificado')   
@@ -139,7 +154,9 @@ export function onSubmit(){
 
 
     }
-    
+    if(obj.get('afluCounter')>(obj.get('afluMax')*.4)){
+        obj.set('afluColor','#fffcbb');
+    }
 
 }
 
@@ -181,7 +198,17 @@ export function scanBarcode() {
 
 function createViewModel(database) {
 
-
+    viewModel.insertAfluencia = function() {
+        var date = new Date();
+        var fechaVisita = fecha.format(date, 'YYYY-MM-DD HH:mm:ss');
+            database.execSQL("INSERT INTO afluencia (fechaVisita) VALUES (?)", [fechaVisita]).then(id => {
+                this.afluencia.push({id: id, fecha:fechaVisita});
+                console.log(this.afluencia);
+                obj.set('afluCounter', this.afluencia.length );
+    }, error => {
+        console.log("INSERT ERROR", error);
+    });
+}
     viewModel.insert = function() {
         var date = new Date();
         var fechaVisita = fecha.format(date, 'YYYY-MM-DD HH:mm:ss');
@@ -193,7 +220,7 @@ function createViewModel(database) {
                     message: "# Cantidad: "+this.lists.length,
                     okButtonText: "Ok"
                 }).then(function () {
-                    console.log("Dialog closed!");
+                    // console.log("Dialog closed!");
                 });
                 obj.set('cantidadReg',this.lists.length);
                 obj.set('txtBtn',"Sincronizar " +this.lists.length + " registros");
@@ -212,13 +239,25 @@ function createViewModel(database) {
                     message: "Sincronizado correctamente!",
                     okButtonText: "Ok"
                 }).then(function () {
-                    console.log("Dialog closed!");
+                    // console.log("Dialog closed!");
                 });
                 this.lists.length = 0;
                 obj.set('cantidadReg',this.lists.length);
                 obj.set('mostrarBtn',false);
             }, error => {
                 console.log("INSERT ERROR", error);
+            });
+        
+    }
+    viewModel.deleteAfluencia = function() {
+        
+            database.execSQL("DELETE FROM afluencia WHERE fechaVisita = '2020-11-23 23:44:07' ").then(() => {
+               
+                viewModel.selectAfluencia();
+                
+                
+            }, error => {
+                console.log("DELETE aflu ERROR", error);
             });
         
     }
@@ -229,7 +268,7 @@ function createViewModel(database) {
         this.lists = new ObservableArray([]);
         database.all("SELECT id, temperatura, codigo, fechaVisita FROM lists").then(rows => {
             for(var row in rows) {
-                console.log(rows[row]);
+                // console.log(rows[row]);
                 this.lists.push({id: rows[row][0], temperatura: rows[row][1], codigo: rows[row][2], fecha:rows[row][3]});
             }
 
@@ -277,6 +316,23 @@ function createViewModel(database) {
             }
 
             // this.lists.forEach(element => console.log(element));
+            
+        }, error => {
+            console.log("SELECT ERROR", error);
+        });
+    }
+    
+    viewModel.select();
+    
+    viewModel.selectAfluencia = function() {
+        this.afluencia = new ObservableArray([]);
+        database.all("SELECT id, fechaVisita FROM afluencia").then(rows => {
+            for(var row in rows) {
+                this.afluencia.push({id: rows[row][0], fecha: rows[row][1]});
+            }
+            
+            obj.set('afluCounter', this.afluencia.length );
+            this.afluencia.forEach(element => console.log(element));
 
 
         }, error => {
@@ -284,7 +340,7 @@ function createViewModel(database) {
         });
     }
 
-    viewModel.select();
+    viewModel.selectAfluencia();
 
     return viewModel;
 }
