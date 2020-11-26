@@ -1,4 +1,4 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded" navigatingTo="onNavigatingTo">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded" >
 
 
     <ActionBar title="Registro de ingreso">
@@ -14,7 +14,8 @@
                 <StackLayout>
                     <Label text="{{clave}}"/>
                     <Button text="Escanear codigo QR" tap="scanBarcode" />
-                    <Label text="{{afluCounter}}" width="100%" class="h3 text-center" backgroundColor="{{afluColor}}" />
+                    <Label text="{{afluBanner}}" width="100%" class="h3 text-center" backgroundColor="{{afluColor}}" />
+                    <Label text="Aforo maximo ha sido superado" width="100%" class="h3 text-center" backgroundColor="#ffcccb" visibility="{{ mostrarMsj ? 'visible' : 'collapsed' }}" />
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Temperatura" class="field-title" />
                         <TextField id="temperatura" text="{{ temp }}" hint=" °C" class="field" ios:col="1" keyboardType="number" android:row="1" />

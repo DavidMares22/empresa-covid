@@ -15,11 +15,13 @@ const obj = fromObject({
     clave:'no identificado',
     mostrar:false,
     mostrarBtn:false,
+    mostrarMsj:false,
     cantidadReg:0,
     txtBtn:'',
+    afluBanner:'',
+    afluColor:'',
+    afluMax:0,
     afluCounter:0,
-    afluColor:'#ffcccb',
-    afluMax:10
 
 })
 // red #ffcccb
@@ -38,25 +40,26 @@ export function loaded(args) {
     page = args.object;  
     page.bindingContext = obj;
     
-    
+    obj.set('afluBanner', obj.get('afluCounter') + ' / ' +appSettings.getString("aforoNegocio"));
+    obj.set('afluMax', parseInt(appSettings.getString("aforoNegocio")));
+    obj.set('afluColor', '#90ee90');
+    obj.set('afluCounter', 0);
+    obj.set('mostrarMsj',false);
+
     (new Sqlite("temp.db")).then(db => {
         db.execSQL("CREATE TABLE IF NOT EXISTS lists (id INTEGER PRIMARY KEY AUTOINCREMENT, temperatura TEXT, codigo TEXT, fechaVisita DATETIME )").then(id => {
             tempDB = createViewModel(db);
         }, error => {
             console.log("CREATE TABLE ERROR", error);
         });
-        db.execSQL("CREATE TABLE IF NOT EXISTS afluencia (id INTEGER PRIMARY KEY AUTOINCREMENT, fechaVisita DATETIME )").then(id => {
-            // tempDB = createViewModel(db);
-            tempDB.deleteAfluencia();   
-        }, error => {
-            console.log("CREATE TABLE ERROR", error);
-        });
+     
     }, error => {
         console.log("OPEN DB ERROR", error);
     });
 
-  
+    
 }     
+
 
  
 
@@ -80,7 +83,8 @@ export function requestPermission() {
     });
 }
 
-export function backHome(){    
+export function backHome(){   
+    obj.set('afluCounter', 0); 
     page.frame.goBack()
 }
 
@@ -101,7 +105,7 @@ export function onSubmit(){
         }).then(function () {
             // console.log("Dialog closed!");
         });
-        // alert('temperatura no valida (35° - 40°)')
+       
     }else{
         
 
@@ -114,49 +118,63 @@ export function onSubmit(){
                 {
                     "codigoindividuo":codigoCliente,
                     "idnegocio":appSettings.getString("idNegocio","vacio"),
-                    "fechavisita":"",
-                    "temperatura":temperature.toString()
+                    "fechavisita":""
                 },
                 "LoginForm":
                 {
                     "username":"negocio",
                     "password":"jvW13%b2020"
-                }
+                },
+                "Biometrico":
+                {
+                    "valor":temperature.toString(),
+                    "tipo":"TEMP"
+                }                
             })
         }).then((response) => {
             const result = response.content.toJSON();
-            Dialogs.alert({
-                title: "Enviado!",
-                message: "temp: "+temperature+" codigo: "+codigoCliente,
-                okButtonText: "Ok"
-            }).then(function () {
-                // console.log("Dialog closed!");
-            });
-         
-            alert('Enviado! '+ temperature + codigoCliente+ response.content)
-            
+          
+            // Dialogs.alert({
+            //     title: "Enviado!",
+            //     message: "temp: "+temperature+" codigo: "+codigoCliente,
+            //     okButtonText: "Ok"
+            // }).then(function () {
+            //     // console.log("Dialog closed!");
+            // });
+            if(result.codigoindividuo){
+                alert(result.codigoindividuo)
+            }else{
+                // alert(result)
+                obj.set('afluCounter',result)
+                obj.set('afluBanner', obj.get('afluCounter') + ' / ' +appSettings.getString("aforoNegocio"));
+            }
+        
             obj.set('mostrar',false);
             if(obj.get('cantidadReg')>0){
 
                 obj.set('mostrarBtn',true);
             }
             obj.set('clave','no identificado')
-            tempDB.insertAfluencia();
+            
         }, (e) => {
             // console.log(e);
             tempDB.insert();
-            tempDB.insertAfluencia();               
+            
             obj.set('mostrarBtn',false);
             obj.set('mostrar',true);
             obj.set('clave','no identificado')   
 
         });
 
-
+        
     }
-    if(obj.get('afluCounter')>(obj.get('afluMax')*.4)){
+    if(obj.get('afluCounter')>=(obj.get('afluMax'))){
+        obj.set('afluColor','#ffcccb');
+        obj.set('mostrarMsj',true);
+    }else if(obj.get('afluCounter')>(obj.get('afluMax')*.7)){
         obj.set('afluColor','#fffcbb');
     }
+    
 
 }
 
@@ -198,17 +216,7 @@ export function scanBarcode() {
 
 function createViewModel(database) {
 
-    viewModel.insertAfluencia = function() {
-        var date = new Date();
-        var fechaVisita = fecha.format(date, 'YYYY-MM-DD HH:mm:ss');
-            database.execSQL("INSERT INTO afluencia (fechaVisita) VALUES (?)", [fechaVisita]).then(id => {
-                this.afluencia.push({id: id, fecha:fechaVisita});
-                console.log(this.afluencia);
-                obj.set('afluCounter', this.afluencia.length );
-    }, error => {
-        console.log("INSERT ERROR", error);
-    });
-}
+  
     viewModel.insert = function() {
         var date = new Date();
         var fechaVisita = fecha.format(date, 'YYYY-MM-DD HH:mm:ss');
@@ -249,18 +257,7 @@ function createViewModel(database) {
             });
         
     }
-    viewModel.deleteAfluencia = function() {
-        
-            database.execSQL("DELETE FROM afluencia WHERE fechaVisita = '2020-11-23 23:44:07' ").then(() => {
-               
-                viewModel.selectAfluencia();
-                
-                
-            }, error => {
-                console.log("DELETE aflu ERROR", error);
-            });
-        
-    }
+   
    
     
 
@@ -324,23 +321,7 @@ function createViewModel(database) {
     
     viewModel.select();
     
-    viewModel.selectAfluencia = function() {
-        this.afluencia = new ObservableArray([]);
-        database.all("SELECT id, fechaVisita FROM afluencia").then(rows => {
-            for(var row in rows) {
-                this.afluencia.push({id: rows[row][0], fecha: rows[row][1]});
-            }
-            
-            obj.set('afluCounter', this.afluencia.length );
-            this.afluencia.forEach(element => console.log(element));
-
-
-        }, error => {
-            console.log("SELECT ERROR", error);
-        });
-    }
-
-    viewModel.selectAfluencia();
+   
 
     return viewModel;
 }

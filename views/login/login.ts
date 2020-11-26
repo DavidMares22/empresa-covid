@@ -24,6 +24,7 @@ export function loaded(args) {
     appSettings.remove("idNegocio")
     appSettings.remove("calleNegocio")
     appSettings.remove("numeroNegocio")
+    appSettings.remove("aforoNegocio")
 
 
 
@@ -114,6 +115,7 @@ export function onSubmit() {
             appSettings.setString("calleNegocio", results.calle)
             appSettings.setString("numeroNegocio", results.numero)
             appSettings.setString("idNegocio", (results.idnegocio).toString())
+            appSettings.setString("aforoNegocio", (results.aforo).toString())
             obj.set('codigo','')
             cambiarPantall();
             // alert(appSettings.getString("idNegocio"))
