@@ -1,93 +1,137 @@
-const {fromObject} = require("@nativescript/core")
+import { BarcodeScanner } from "nativescript-barcodescanner";
+let barcodescannerModule = new BarcodeScanner();
+const { fromObject } = require("@nativescript/core")
 const httpModule = require("tns-core-modules/http");
 var appSettings = require("tns-core-modules/application-settings");
-
+var Dialogs = require("ui/dialogs");
 
 const obj = fromObject({
-    username:'abelnevar3',
-    pwd:'mad23241',
-    years:'',
-    mostrar:false,
-    
+    codigo: '',
+
+
 })
 
 var page;
-var indexSelected;
-var results=[];
-var items = [];
+var results;
+
+
 
 export function loaded(args) {
-    obj.set('mostrar',false)
-    page = args.object;  
+
+    page = args.object;
     page.bindingContext = obj
     appSettings.remove("nombreNegocio")
     appSettings.remove("idNegocio")
     appSettings.remove("calleNegocio")
     appSettings.remove("numeroNegocio")
-    items = []
 
-    
+
+
 }
 
-export function onListPickerLoaded(fargs) {
-    const listPickerComponent = fargs.object;
-    listPickerComponent.on("selectedIndexChange", (args) => {
-        const picker = args.object;
-        indexSelected = picker.selectedIndex;
-        console.log(`index: ${picker.selectedIndex}; item" ${items[picker.selectedIndex]}`);
+export function requestPermission() {
+    return new Promise((resolve, reject) => {
+        barcodescannerModule.available().then((available) => {
+            if (available) {
+                barcodescannerModule.hasCameraPermission().then((granted) => {
+                    if (!granted) {
+                        barcodescannerModule.requestCameraPermission().then(() => {
+                            resolve("Camera permission granted");
+                        });
+                    } else {
+                        resolve("Camera permission was already granted");
+                    }
+                });
+            } else {
+                reject("This device does not have an available camera");
+            }
+        });
     });
 }
+export function scanBarcode() {
+
+    requestPermission().then((result) => {
+        barcodescannerModule.scan({
+            cancelLabel: "Stop scanning",
+            message: "Go scan something",
+            preferFrontCamera: false,
+            showFlipCameraButton: true
+        }).then((result) => {
+            console.log("Scan format: " + result.format);
+            console.log("Scan text:   " + result.text);
+            obj.set('codigo', result.text)
+
+
+        }, (error) => {
+            console.log("No scan: " + error);
+
+        });
+    }, (error) => {
+        console.log("ERROR", error);
+    });
 
 
 
-export function onSubmit(){
-    // console.log(obj.get('username') + '  ' +obj.get('pwd'))
-    
+
+
+
+}
+
+
+export function onSubmit() {
+
+
     httpModule.request({
-            url: "https://www.covidcinvestav.com/index.php?r=api/loginnegocio",
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            content: JSON.stringify({
-            
-                  
-                    "username" :obj.get('username'),
-                    "pwd" : obj.get('pwd')            
-            
-                })
-            }).then((response) => {
-                     results = response.content.toJSON();
-                    alert(response.content)
-                    // alert(result.length)
-                    
-                    // appSettings.setString("nombreNegocio", result[0].nombre)
-                    results.forEach(negocio => items.push(negocio.calle+" #"+negocio.numero));
-                    
-                    obj.set('years',items)
-                    
-                    obj.set('mostrar',true)
-                 
-                    
-                    }).catch((e) => {
-                              console.log(e);
-                          }) 
-                        // items = ['1993','1994','1995','1996']
-                        
-                    }
-                    
-                    export function selectNegocio(){
-                        
-                        // alert(items[indexSelected])
-                     appSettings.setString("LoggedIn","Si");
-                     appSettings.setString("nombreNegocio", results[indexSelected].nombre)
-                     appSettings.setString("calleNegocio", results[indexSelected].calle)
-                     appSettings.setString("numeroNegocio", results[indexSelected].numero)
-                     appSettings.setString("idNegocio", (results[indexSelected].idnegocio).toString())
 
-                     const options1 = {
-                             moduleName:"views/menu/menu",
-                             clearHistory:true
-                         }
-                         page.frame.navigate(options1);
+        url: "https://www.covidcinvestav.com/index.php?r=api/iniciosesion",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        content: JSON.stringify({
+            "Negocio":
+            {
+                "codigo": obj.get('codigo')
+            },
+            "LoginForm":
+            {
+                "username": "negocio",
+                "password": "jvW13%b2020"
+            }
+        })
+    }).then((response) => {
+        results = JSON.parse(response.content);
+        if (results.status === 404) {
 
-                         
-                    }
+            Dialogs.alert({
+                title: "Codigo no encontrado",
+                message: "El codigo no se encuentra en la base de datos",
+                okButtonText: "Ok"
+            }).then(function () {
+                // console.log("Dialog closed!");
+            });
+        } else {
+            appSettings.setString("LoggedIn", "Si");
+            appSettings.setString("nombreNegocio", results.nombre)
+            appSettings.setString("calleNegocio", results.calle)
+            appSettings.setString("numeroNegocio", results.numero)
+            appSettings.setString("idNegocio", (results.idnegocio).toString())
+            obj.set('codigo','')
+            cambiarPantall();
+            // alert(appSettings.getString("idNegocio"))
+
+        }
+    }).catch((e) => {
+        console.log(e);
+    })
+
+}
+
+function cambiarPantall() {
+
+    const options1 = {
+        moduleName: "views/menu/menu",
+        clearHistory: true
+    }
+    page.frame.navigate(options1);
+
+
+}

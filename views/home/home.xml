@@ -1,31 +1,31 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded"  navigatingTo="onNavigatingTo">
-    
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded" navigatingTo="onNavigatingTo">
+
 
     <ActionBar title="Registro de ingreso">
 
-<NavigationButton text="Go Back" android.systemIcon="ic_menu_back" tap="backHome"/>
-</ActionBar>
+        <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" tap="backHome"/>
+    </ActionBar>
     <StackLayout >
-            <Button text="{{txtBtn}}" tap="sincReg" visibility="{{ mostrarBtn ? 'visible' : 'collapsed' }}"/>
-            <Label text="Modo sin conexion" width="100%" class="h3 text-center" backgroundColor="#add8e6" visibility="{{ mostrar? 'visible' : 'collapsed' }}"/>
-            <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
-            
+        <Button text="{{txtBtn}}" tap="sincReg" visibility="{{ mostrarBtn ? 'visible' : 'collapsed' }}"/>
+        <Label text="Modo sin conexion" width="100%" class="h3 text-center" backgroundColor="#add8e6" visibility="{{ mostrar? 'visible' : 'collapsed' }}"/>
+        <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
+
             <ScrollView row="1" class="fields-section">
                 <StackLayout>
                     <Label text="{{clave}}"/>
                     <Button text="Escanear codigo QR" tap="scanBarcode" />
-            <Label text="{{afluCounter}}" width="100%" class="h3 text-center" backgroundColor="{{afluColor}}" />
+                    <Label text="{{afluCounter}}" width="100%" class="h3 text-center" backgroundColor="{{afluColor}}" />
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Temperatura" class="field-title" />
                         <TextField id="temperatura" text="{{ temp }}" hint=" °C" class="field" ios:col="1" keyboardType="number" android:row="1" />
                     </GridLayout>
-                
+
                 </StackLayout>
             </ScrollView>
-                
+
             <Button text="Enviar" class="update" tap="onSubmit" row="2"/>
         </GridLayout>
-    
-        
+
+
     </StackLayout>
 </Page>

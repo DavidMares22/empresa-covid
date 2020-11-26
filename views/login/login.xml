@@ -1,30 +1,27 @@
 <Page loaded="loaded">
-    
+
 
     <ActionBar>
-<Label text="Iniciar sesión" width="100%" class="h2 text-center" />
-</ActionBar>
+        <Label text="Iniciar sesión" width="100%" class="h2 text-center" />
+    </ActionBar>
     <StackLayout >
-      
-            <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
-            
+
+        <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
+
             <ScrollView row="1" class="fields-section">
                 <StackLayout>
+
                     
-                    <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
-                        <Label text="Usuario" class="field-title" />
-                        <TextField id="usuario" text="{{ username }}" class="field" ios:col="1"  android:row="1" />
-                    </GridLayout>
-                    <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
-                        <Label text="Contraseña" class="field-title" />
-                        <TextField id="contraseña" secure="true" text="{{ pwd }}" class="field" ios:col="1"  android:row="1" />
-                    </GridLayout>
-             
-                <ListPicker class="picker" items="{{ years }}"  selectedIndex="0" loaded="onListPickerLoaded" visibility="{{ mostrar? 'visible' : 'collapsed' }}"  />
+                    <Label text="{{codigo}}"/>
+                    <Button text="Escanear codigo QR" tap="scanBarcode" />
+                    
+
+
+
                 </StackLayout>
             </ScrollView>
             <Button text="Iniciar sesión" class="update" tap="onSubmit" row="2" />
-            <Button text="seleccionar negocio" class="update" tap="selectNegocio" row="2" visibility="{{ mostrar? 'visible' : 'collapsed' }}"/>
+
         </GridLayout>
     </StackLayout>
 </Page>
