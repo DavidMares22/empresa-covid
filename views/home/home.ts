@@ -42,8 +42,8 @@ export function loaded(args) {
     
     obj.set('afluBanner', obj.get('afluCounter') + ' / ' +appSettings.getString("aforoNegocio"));
     obj.set('afluMax', parseInt(appSettings.getString("aforoNegocio")));
-    obj.set('afluColor', '#90ee90');
-    obj.set('afluCounter', 0);
+    
+    
     obj.set('mostrarMsj',false);
 
     (new Sqlite("temp.db")).then(db => {
@@ -57,6 +57,16 @@ export function loaded(args) {
         console.log("OPEN DB ERROR", error);
     });
 
+    // if(obj.get('afluCounter')>=(obj.get('afluMax'))){
+    //     obj.set('afluColor','#ffcccb');
+    //     obj.set('mostrarMsj',true);
+    // }else if(obj.get('afluCounter')>(obj.get('afluMax')*.7)){
+    //     obj.set('afluColor','#fffcbb');
+    //     obj.set('mostrarMsj',false);
+    // }else{
+    //     obj.set('afluColor', '#90ee90');
+    //     obj.set('mostrarMsj',false);
+    // }
     
 }     
 
@@ -84,7 +94,7 @@ export function requestPermission() {
 }
 
 export function backHome(){   
-    obj.set('afluCounter', 0); 
+    // obj.set('afluCounter', 0); 
     page.frame.goBack()
 }
 
@@ -155,6 +165,17 @@ export function onSubmit(){
                 obj.set('mostrarBtn',true);
             }
             obj.set('clave','no identificado')
+
+            if(obj.get('afluCounter')>=(obj.get('afluMax'))){
+                obj.set('afluColor','#ffcccb');
+                obj.set('mostrarMsj',true);
+            }else if(obj.get('afluCounter')>(obj.get('afluMax')*.7)){
+                obj.set('afluColor','#fffcbb');
+                obj.set('mostrarMsj',false);
+            }else{
+                obj.set('afluColor', '#90ee90');
+                obj.set('mostrarMsj',false);
+            }
             
         }, (e) => {
             // console.log(e);
@@ -168,12 +189,7 @@ export function onSubmit(){
 
         
     }
-    if(obj.get('afluCounter')>=(obj.get('afluMax'))){
-        obj.set('afluColor','#ffcccb');
-        obj.set('mostrarMsj',true);
-    }else if(obj.get('afluCounter')>(obj.get('afluMax')*.7)){
-        obj.set('afluColor','#fffcbb');
-    }
+    
     
 
 }
