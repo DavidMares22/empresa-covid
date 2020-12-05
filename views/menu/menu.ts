@@ -12,7 +12,7 @@ export function loaded(args) {
         nombreNegocio:appSettings.getString("nombreNegocio","vacio") +" - "+appSettings.getString("calleNegocio","vacio")+" #"+appSettings.getString("numeroNegocio","vacio"),
         
       }
-    
+    // console.log(appSettings.getString("idNegocio"))
     
 }
 
@@ -22,9 +22,9 @@ export function goCheckin(args) {
   page.frame.navigate("views/home/home");
   
 }
-export function goExample(args) {
+export function goHistorial() {
    
-  page.frame.navigate("views/example/example");
+  console.log("hola");
   
 }
 export function goLogout() {

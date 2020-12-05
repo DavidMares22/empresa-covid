@@ -7,7 +7,7 @@ var Dialogs = require("ui/dialogs");
 
 const obj = fromObject({
     codigo: '',
-
+    busy:false
 
 })
 
@@ -80,7 +80,7 @@ export function scanBarcode() {
 
 
 export function onSubmit() {
-
+    obj.set('busy',true)
 
     httpModule.request({
 
@@ -101,7 +101,7 @@ export function onSubmit() {
     }).then((response) => {
         results = JSON.parse(response.content);
         if (results.status === 404) {
-
+            obj.set('busy',false)
             Dialogs.alert({
                 title: "Codigo no encontrado",
                 message: "El codigo no se encuentra en la base de datos",
@@ -117,6 +117,7 @@ export function onSubmit() {
             appSettings.setString("idNegocio", (results.idnegocio).toString())
             appSettings.setString("aforoNegocio", (results.aforo).toString())
             obj.set('codigo','')
+            obj.set('busy',false)
             cambiarPantall();
             // alert(appSettings.getString("idNegocio"))
 
