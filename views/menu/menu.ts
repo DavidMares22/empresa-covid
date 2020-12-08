@@ -17,14 +17,14 @@ export function loaded(args) {
 }
 
 
-export function goCheckin(args) {
+export function goCheckin() {
    
   page.frame.navigate("views/home/home");
   
 }
 export function goHistorial() {
    
-  console.log("hola");
+  page.frame.navigate("views/historial/historial");
   
 }
 export function goLogout() {
