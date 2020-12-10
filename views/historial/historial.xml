@@ -1,6 +1,6 @@
 <page loaded="onPageLoaded">
   <ActionBar>
-<Label text="Historial" width="100%" class="h2 text-center" />
+<Label text="Historial" width="100%" class="h2 text-center white" />
 
         
       <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" tap="backHome"/>
@@ -14,6 +14,6 @@
           </ListView.itemTemplate>
 
         </ListView>
-       <ActivityIndicator busy="{{busy}}" color="blue" width="100" height="100"></ActivityIndicator>
+       <ActivityIndicator busy="{{busy}}" color="#ed7d31" width="100" height="100"></ActivityIndicator>
     </GridLayout>
 </page>

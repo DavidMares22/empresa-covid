@@ -1,7 +1,7 @@
 <page loaded="loaded">
 
 <ActionBar>
-<Label text="{{nombreNegocio}}" width="100%" class="h3 text-center" textWrap="true" />
+<Label text="{{nombreNegocio}}" width="100%" class="h3 text-center white" textWrap="true" />
 
 </ActionBar>
 
@@ -9,8 +9,8 @@
         
         
         <Button  text="Hacer registro de ingreso" tap="goCheckin" ></Button>
-        <Button  text="Cerrar sesión" tap="goLogout" ></Button>
         <Button  text="Historial de visitas" tap="goHistorial" ></Button>
+        <Button  text="Cerrar sesión" tap="goLogout" ></Button>
         
         
         

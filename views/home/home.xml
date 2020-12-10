@@ -1,21 +1,28 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded" >
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" loaded="loaded">
 
 
-    <ActionBar title="Registro de ingreso">
-
+    <ActionBar>
+        <Label text="Registro de ingreso" width="100%" class="h2 text-center white" />
         <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" tap="backHome"/>
     </ActionBar>
     <StackLayout >
         <Button text="{{txtBtn}}" tap="sincReg" visibility="{{ mostrarBtn ? 'visible' : 'collapsed' }}"/>
         <Label text="Modo sin conexion" width="100%" class="h3 text-center" backgroundColor="#add8e6" visibility="{{ mostrar? 'visible' : 'collapsed' }}"/>
+        <Label text="Aforo actual estimado" width="100%" class="h3 text-center m-5" />
+        <Label text="{{afluBanner}}" width="100%" class="h3 text-center" backgroundColor="{{afluColor}}" />
+        <Label text="Aforo maximo ha sido superado" width="100%" class="h3 text-center" backgroundColor="#ffcccb" visibility="{{ mostrarMsj ? 'visible' : 'collapsed' }}" />
+        <label class="line"></label>
         <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
-
             <ScrollView row="1" class="fields-section">
                 <StackLayout>
-                    <Label text="{{clave}}"/>
-                    <Button text="Escanear codigo QR" tap="scanBarcode" />
-                    <Label text="{{afluBanner}}" width="100%" class="h3 text-center" backgroundColor="{{afluColor}}" />
-                    <Label text="Aforo maximo ha sido superado" width="100%" class="h3 text-center" backgroundColor="#ffcccb" visibility="{{ mostrarMsj ? 'visible' : 'collapsed' }}" />
+                    
+                    <Label class="h4 m-5 text-center" textWrap="true">
+                        <FormattedString>
+                            <Span text="Asistente "></Span>
+                            <Span text="{{clave}}"></Span>                            
+                        </FormattedString>
+                    </Label>
+                    <Button text="Escanear código QR" tap="scanBarcode" />
                     <GridLayout ios:columns="auto,*" android:rows="auto, auto" verticalAlignment="top">
                         <Label text="Temperatura" class="field-title" />
                         <TextField id="temperatura" text="{{ temp }}" hint=" °C" class="field" ios:col="1" keyboardType="number" android:row="1" />
@@ -24,7 +31,7 @@
                 </StackLayout>
             </ScrollView>
 
-            <Button text="Enviar" class="update" tap="onSubmit" row="2"/>
+            <Button text="Enviar" class="update" tap="onSubmit" row="2" backgroundColor="#ed7d31"/>
         </GridLayout>
 
 

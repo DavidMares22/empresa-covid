@@ -2,7 +2,7 @@
 
 
     <ActionBar>
-        <Label text="Iniciar sesión" width="100%" class="h2 text-center" />
+        <Label text="Iniciar sesión" width="100%" class="h2 text-center white" />
     </ActionBar>
     <StackLayout >
 
@@ -11,16 +11,18 @@
             <ScrollView row="1" class="fields-section">
                 <StackLayout>
 
-                    
+                    <Label text="¡Hola!
+Te invitamos a escanear el código de tu establecimiento previamente registrado en covidcinvestav.com para poder iniciar sesión
+" textWrap="true" class="h3 "/>
                     <Label text="{{codigo}}"/>
-                    <Button text="Escanear codigo QR" tap="scanBarcode" />
+                    <Button text="Escanear código QR" tap="scanBarcode" />
                     
-                    <ActivityIndicator busy="{{busy}}" color="blue" width="100" height="100"></ActivityIndicator>
+                    <ActivityIndicator busy="{{busy}}" color="#ed7d31" width="100" height="100"></ActivityIndicator>
 
 
                 </StackLayout>
             </ScrollView>
-            <Button text="Iniciar sesión" class="update" tap="onSubmit" row="2" />
+            <Button text="Iniciar sesión" class="update" tap="onSubmit" row="2" backgroundColor="#ed7d31" />
 
         </GridLayout>
     </StackLayout>

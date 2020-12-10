@@ -44,7 +44,7 @@ export function loaded(args) {
     obj.set('afluMax', parseInt(appSettings.getString("aforoNegocio")));
     
     
-    obj.set('mostrarMsj',false);
+    // obj.set('mostrarMsj',false);
 
     (new Sqlite("temp.db")).then(db => {
         db.execSQL("CREATE TABLE IF NOT EXISTS lists (id INTEGER PRIMARY KEY AUTOINCREMENT, temperatura TEXT, codigo TEXT, fechaVisita DATETIME )").then(id => {
@@ -110,7 +110,7 @@ export function onSubmit(){
     if (temperature<35 || temperature>40 || isNaN(temperature) ){
         Dialogs.alert({
             title: "Error",
-            message: "temperatura no valida (35° - 40°): ",
+            message: "Temperatura no valida (35° - 40°): ",
             okButtonText: "Ok"
         }).then(function () {
             // console.log("Dialog closed!");
