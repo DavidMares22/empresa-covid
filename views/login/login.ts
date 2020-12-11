@@ -90,8 +90,9 @@ export function onSubmit() {
         content: JSON.stringify({
             "Negocio":
             {
-                "codigo": obj.get('codigo')
+                // "codigo": obj.get('codigo')
                 // "codigo": "$2y$13$KHMuFVXRUZva/BsEnStaA.1L4oEcRO.Mf3gczSERA4CXbGBMRDu6K"
+                "codigo": "$2y$13$ckOx4ZtG5Z6Li/EKSKCxN.Xz/5EA.5BCiFWiScCk2jcUNbx2imiE6"
             },
             "LoginForm":
             {

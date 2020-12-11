@@ -15,11 +15,11 @@
         <GridLayout id="form-content" class="form-content" rows="auto,*,auto">
             <ScrollView row="1" class="fields-section">
                 <StackLayout>
-                    
+
                     <Label class="h4 m-5 text-center" textWrap="true">
                         <FormattedString>
                             <Span text="Asistente "></Span>
-                            <Span text="{{clave}}"></Span>                            
+                            <Span text="{{clave}}"></Span>
                         </FormattedString>
                     </Label>
                     <Button text="Escanear código QR" tap="scanBarcode" />
@@ -27,9 +27,11 @@
                         <Label text="Temperatura" class="field-title" />
                         <TextField id="temperatura" text="{{ temp }}" hint=" °C" class="field" ios:col="1" keyboardType="number" android:row="1" />
                     </GridLayout>
-
+                    <ActivityIndicator busy="{{busy}}" color="#ed7d31" width="100" height="100" visibility="{{ !mostrarCheck ? 'visible' : 'collapsed' }}"></ActivityIndicator>
+                    <Image src="~/Check.png" width="100" height="100" visibility="{{ mostrarCheck ? 'visible' : 'collapsed' }}"></Image>
                 </StackLayout>
             </ScrollView>
+
 
             <Button text="Enviar" class="update" tap="onSubmit" row="2" backgroundColor="#ed7d31"/>
         </GridLayout>

@@ -22,6 +22,8 @@ const obj = fromObject({
     afluColor:'',
     afluMax:0,
     afluCounter:0,
+    busy:false,
+    mostrarCheck:false,
 
 })
 // red #ffcccb
@@ -104,9 +106,11 @@ export function sincReg(){
 }
 
 export function onSubmit(){
+    
     temperature = parseFloat(obj.get('temp'));
     codigoCliente = obj.get('clave');
-
+    
+    obj.set('mostrarCheck',false);
     if (temperature<35 || temperature>40 || isNaN(temperature) ){
         Dialogs.alert({
             title: "Error",
@@ -117,6 +121,8 @@ export function onSubmit(){
         });
        
     }else{
+        obj.set('busy',true);
+        
         
 
         httpModule.request({
@@ -155,6 +161,7 @@ export function onSubmit(){
                 alert(result.codigoindividuo)
             }else{
                 // alert(result)
+                obj.set('mostrarCheck',true)
                 obj.set('afluCounter',result)
                 obj.set('afluBanner', obj.get('afluCounter') + ' / ' +appSettings.getString("aforoNegocio"));
             }
@@ -176,11 +183,13 @@ export function onSubmit(){
                 obj.set('afluColor', '#90ee90');
                 obj.set('mostrarMsj',false);
             }
+
+            obj.set('busy',false);
             
         }, (e) => {
             // console.log(e);
             tempDB.insert();
-            
+            obj.set('busy',false);
             obj.set('mostrarBtn',false);
             obj.set('mostrar',true);
             obj.set('clave','no identificado')   
@@ -298,18 +307,22 @@ function createViewModel(database) {
                             "codigoindividuo":element.codigo,
                             "idnegocio":appSettings.getString("idNegocio","vacio"),
                             "fechavisita":element.fecha,
-                            "temperatura":element.temperatura
                         },
                         "LoginForm":
                         {
                             "username":"negocio",
                             "password":"jvW13%b2020"
-                        }
+                        },
+                        "Biometrico":
+                        {
+                            "valor":element.temperatura,
+                            "tipo":"TEMP"
+                        }                
                     })
                 }).then((response) => {
-                        
+                    console.log(response.content.toJSON());
                 }, (e) => {
-                            
+                    console.log("ERROR", e);
                 });
 
             });
