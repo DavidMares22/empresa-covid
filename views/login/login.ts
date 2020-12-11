@@ -90,8 +90,8 @@ export function onSubmit() {
         content: JSON.stringify({
             "Negocio":
             {
-                // "codigo": obj.get('codigo')
-                "codigo": "$2y$13$KHMuFVXRUZva/BsEnStaA.1L4oEcRO.Mf3gczSERA4CXbGBMRDu6K"
+                "codigo": obj.get('codigo')
+                // "codigo": "$2y$13$KHMuFVXRUZva/BsEnStaA.1L4oEcRO.Mf3gczSERA4CXbGBMRDu6K"
             },
             "LoginForm":
             {
@@ -104,8 +104,8 @@ export function onSubmit() {
         if (results.status === 404) {
             obj.set('busy',false)
             Dialogs.alert({
-                title: "Codigo no encontrado",
-                message: "El codigo no se encuentra en la base de datos",
+                title: "Código no encontrado",
+                message: "El código no se encuentra en la base de datos",
                 okButtonText: "Ok"
             }).then(function () {
                 // console.log("Dialog closed!");
