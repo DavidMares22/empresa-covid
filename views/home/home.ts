@@ -162,8 +162,13 @@ export function onSubmit(){
             }else{
                 // alert(result)
                 obj.set('mostrarCheck',true)
+                
                 obj.set('afluCounter',result)
                 obj.set('afluBanner', obj.get('afluCounter') + ' / ' +appSettings.getString("aforoNegocio"));
+                setTimeout(() => {
+                    obj.set('mostrarCheck',false)
+                     
+                }, 1000);
             }
         
             obj.set('mostrar',false);
